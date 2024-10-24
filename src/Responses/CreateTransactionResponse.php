@@ -15,8 +15,6 @@ class CreateTransactionResponse
         $this->status = $status;
     }
 
-    // Getters
-
     public function toArray(): array
     {
         return [
@@ -35,8 +33,6 @@ class CreateTransactionResponse
     {
         return $this->numberVa;
     }
-
-    // Format response as array
 
     public function getStatus(): string
     {

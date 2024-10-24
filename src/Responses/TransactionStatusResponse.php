@@ -15,8 +15,6 @@ class TransactionStatusResponse
         $this->status = $status;
     }
 
-    // Getters
-
     public function toArray(): array
     {
         return [
@@ -35,8 +33,6 @@ class TransactionStatusResponse
     {
         return $this->invoiceId;
     }
-
-    // Format response as array
 
     public function getStatus(): string
     {

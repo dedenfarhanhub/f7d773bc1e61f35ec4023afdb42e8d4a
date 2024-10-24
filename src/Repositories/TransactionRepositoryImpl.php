@@ -36,7 +36,7 @@ class TransactionRepositoryImpl implements TransactionRepositoryInterface
                 throw new DuplicateDataException("Invoice ID already exists.");
             }
 
-            // Insert payment
+            // Insert transaction
             $stmt = $this->db->prepare("INSERT INTO transactions (invoice_id, references_id, merchant_id,
                         amount, item_name, customer_name, number_va, payment_type, status) 
                         VALUES (:invoiceId, :referencesId, :merchantId, :amount, :itemName, :customerName, :numberVa,
