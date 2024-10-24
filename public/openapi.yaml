@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: Payment Service API
+  description: API for managing payment transactions
+  version: 1.0.0
+servers:
+  - url: http://localhost:9000/api
+paths:
+  /transactions/status:
+    get:
+      summary: Get Status of Transaction
+      description: Retrieve the latest status of a transaction based on references_id and merchant_id.
+      parameters:
+        - name: references_id
+          in: query
+          required: true
+          description: The unique reference ID for the transaction.
+          schema:
+            type: string
+        - name: merchant_id
+          in: query
+          required: true
+          description: The ID of the merchant.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transaction status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Transaction status retrieved successfully
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                    example: []
+                  data:
+                    type: object
+                    properties:
+                      references_id:
+                        type: string
+                        example: abc123
+                      invoice_id:
+                        type: string
+                        example: inv001
+                      status:
+                        type: string
+                        example: Pending
+        '422':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 422
+                  message:
+                    type: string
+                    example: Invalid parameters
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                    example: []
+                  data:
+                    type: object
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Transaction not found
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Transaction not found"]
+                  data:
+                    type: object
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: Transaction status retrieval failed
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Error retrieving transaction status"]
+                  data:
+                    type: object
+  /transactions:
+    post:
+      summary: Create a new transaction
+      description: This endpoint creates a new payment transaction.
+      operationId: createTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invoice_id:
+                  type: string
+                  description: The unique invoice ID for the transaction.
+                  example: "INV123456"
+                item_name:
+                  type: string
+                  description: The name of the item being purchased.
+                  example: "Product ABC"
+                amount:
+                  type: number
+                  format: float
+                  description: The amount for the transaction.
+                  example: 150.00
+                payment_type:
+                  type: string
+                  description: The type of payment method used.
+                  example: "credit_card"
+                customer_name:
+                  type: string
+                  description: The name of the customer making the payment.
+                  example: "John Doe"
+                merchant_id:
+                  type: string
+                  description: The unique ID of the merchant.
+                  example: "MERCHANT123"
+      responses:
+        '201':
+          description: Transaction created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Transaction created successfully"
+                  errors:
+                    type: array
+                    example: []
+                  data:
+                    type: object
+                    properties:
+                      references_id:
+                        type: string
+                        example: "REF123456"
+                      number_va:
+                        type: string
+                        example: "VA123456"
+                      status:
+                        type: string
+                        example: "Pending"
+        '422':
+          description: Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 422
+                  message:
+                    type: string
+                    example: "Invalid request parameters"
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      example: ['Field "invoice_id" is required.']
+        '409':
+          description: Duplicate data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 409
+                  message:
+                    type: string
+                    example: "Invoice ID already exists."
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      example: ['Invoice ID already exists.']
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Transaction creation failed"
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      example: ["Error creating transaction"]
