@@ -56,11 +56,17 @@ payment-service
    mv <cloned-repo> payment-service
    ```
 3. Set up environment variables
-   Create a `.env` file by copying `.env.example` and configure the values based on your setup:
+
+    Create a `.env` file by copying `.env.example` and configure the values based on your setup:
    ```bash
    cp .env.example .env
    ```
-   Make sure to configure the following:
+
+    Before running the application with Docker, make sure to configure the environment variables by creating a `.env.docker` file.
+    ```bash
+   cp .env.example .env.docker
+   ```
+    Make sure to configure the following:
    ```
    DB_HOST=db
    DB_PORT=3306
